@@ -2,7 +2,7 @@
 """
 Views index, contains status and stat endpoints.
 """
-# api/v1/views/index.py
+from models import storage
 from api.v1.views import app_views
 from flask import jsonify
 
@@ -10,3 +10,14 @@ from flask import jsonify
 def status():
     return jsonify({"status": "OK"})
 
+@app_views.route('/stats', methods=['GET'])
+def stats():
+    stats = {
+        "Amenity": storage.count('Amenity'),
+        "City": storage.count('City'),
+        "Place": storage.count('Place'),
+        "Review": storage.count('Review'),
+        "State": storage.count('State'),
+        "User": storage.count('User')
+    }
+    return jsonify(stats)
